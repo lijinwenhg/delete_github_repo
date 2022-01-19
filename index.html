@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>删除github的仓库</title>
+</head>
+<body>
+  <h2>删除github账户的仓库</h2>
+  <div>
+    请输入token: <input type="password" placeholder="请输入token" id='token'> <br><br>
+    请输入用户名: <input type="text" placeholder="请输入用户名" id="username"><br><br>
+    请输入仓库名称: <input type="text" placeholder="请输入仓库名称" id="repo"><br><br>
+  </div>
+  <button id="del-btn">删除此仓库 </button><br><br>
+
+  <script type="module">
+    import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
+
+    document.querySelector('#del-btn').addEventListener('click', handleDeleteRepo, false);
+
+    function handleDeleteRepo(){
+      const token = document.querySelector('#token').value;
+      const username = document.querySelector('#username').value;
+      const repo = document.querySelector('#repo').value;
+       
+      if(!token.trim() || !username.trim() || !repo.trim()){
+        return alert('请输入 token / 用户名 / 仓库名称');
+      }
+      const octokit = new Octokit({ auth: `${token}` });
+      octokit.request(`DELETE /repos/${username}/${repo}`, {
+        owner: `${username}`,
+        repo: `${repo}`
+      }).then(d => {
+        if(d.status === 204) {
+          alert('删除成功 ')
+          document.querySelector('#repo').value = ''
+        }else{
+          alert('删除失败');
+          document.querySelector('#repo').value = ''
+        }
+      }).catch(err => {
+        alert('此仓库不存在');
+        document.querySelector('#repo').value = ''
+      })
+    }
+
+  </script>
+</body>
+</html>
