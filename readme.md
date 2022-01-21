@@ -4,4 +4,5 @@
 + 接口api: https://docs.github.com/en/rest/reference/repos#delete-a-repository
 + 接口使用方法： https://github.com/octokit/core.js#readme
 
++ 注：现在一次只能删除一个仓库。
 + 待添加功能： 一次性删除多个仓库。
